@@ -24,14 +24,20 @@ html
             });
           // Data
           var line1 = new TimeSeries();
-           smoothie.streamTo(document.getElementById("mycanvas"), 1000 /*delay*/);
-          smoothie.addTimeSeries(line1,
-            { strokeStyle:'rgb(0, 255, 0)', lineWidth:5 });
+          var count = 0;
+
+          setInterval(function() {
+            line1.append(new Date().getTime(), count);
+          }, 1000);
+
           socket.on('count', function (data) {
+            count = data.number;
             line1.append(new Date().getTime(), data.number);
-                $('span').text(data.number + '!');
+            $('span').text(data.number + '!');
           });
 
+          smoothie.addTimeSeries(line1,
+            { strokeStyle:'rgb(0, 255, 0)', lineWidth:5 });
 
-          // Add to SmoothieChart
-          smoothie.addTimeSeries(line1);
+          smoothie.streamTo(document.getElementById("mycanvas"), 1000 /*delay*/);
+
