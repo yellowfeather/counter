@@ -37,6 +37,7 @@ app.get '/', (req, res) ->
   res.render 'index', {title: 'node.js express socket.io counter'}
 
 if not module.parent
-  app.listen 10927
-  console.log "Express server listening on port %d", app.address().port
+  port = 10927
+  app.listen port
+  console.log "Express server listening on port %d", port
 

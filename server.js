@@ -1,11 +1,14 @@
 (function() {
-  var app, count, express, io;
-  express = require('express');
-  io = require('socket.io');
-  app = module.exports = express.createServer();
+  var express = require('express'), http = require('http');
+
+  var app = express();
+
   app.configure(function() {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
+    app.set('view options', {
+        layout: false
+    });
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(require('stylus').middleware({
@@ -23,7 +26,10 @@
   app.configure('production', function() {
     return app.use(express.errorHandler());
   });
-  io = require('socket.io').listen(app);
+
+  var server = http.createServer(app);
+  var io = require('socket.io').listen(server);
+
   count = 0;
   io.sockets.on('connection', function(socket) {
     count++;
@@ -42,8 +48,10 @@
       title: 'node.js express socket.io counter'
     });
   });
+
   if (!module.parent) {
-    app.listen(10927);
-    console.log("Express server listening on port %d", app.address().port);
+    port = 10927;
+    server.listen(port);
+    console.log("Express server listening on port %d", port);
   }
 }).call(this);

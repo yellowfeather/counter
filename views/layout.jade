@@ -1,4 +1,4 @@
-!!!
+doctype 5
 html
   head
     title= title
@@ -7,7 +7,8 @@ html
     script(src="/javascripts/smoothie.js")
     script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js")
   body
-    section#wrapper!= body
+    block content
+    section#wrapper
         canvas#mycanvas
         script(type='text/javascript')
           var socket = io.connect();
